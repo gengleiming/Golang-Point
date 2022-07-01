@@ -186,29 +186,6 @@ func main() {
 
 `append()` 的第二个参数不能直接使用 `slice` ，需使用 `...` 操作符，将一个切片追加到另一个切片上： `append(s1, s2...)` 。或者直接跟上元素，形如： `append(s1, 1, 2, 3)`  。
 
-## 8. 下面这段代码能否通过编译，如果可以，输出什么？
-
-```go
-var (
-    size := 1024
-    max_size = size * 2
-)
-
-func main() {
-    fmt.Println(size, max_size)
-}
-```
-
-**答：不能通过**
-
-**解析：**
-
-这道题的主要知识点是变量的简短模式，形如：x := 100 。但这种声明方式有限制：
-
-1. 必须使用显示初始化；
-1. 不能提供数据类型，编译器会自动推导；
-1. 只能在函数内部使用简短模式；
-
 ## 9. 下面这段代码能否通过编译？不能的话，原因是什么？如果通过，输出什么？
 
 ```go
@@ -220,10 +197,10 @@ func main() {
 	sn2 := struct {
         age  int
         name string
-	}{age: 11, name: "11"}
+	}{age: 11, name: "qq"}
 
     if sn1 == sn2 {
-        fmt.Println("sn1 == sn2")
+        fmt.Println("sn1 == sn2")  // sn1 == sn2
     }
 
     sm1 := struct {
@@ -259,19 +236,6 @@ func main() {
 
 - slice、map、函数
 
-## 10. 通过指针变量p访问其成员变量name,有哪几种方式？
-
-- A. p.name
-- B. (&p).name
-- C. (*p).name
-- D. p->name
-
-**答：A C**
-
-**解析：**
-
-`&` 取址运算符， `*` 指针解引用
-
 ## 11. 下面这段代码能否通过编译？如果通过，输出什么？
 
 ```go
@@ -280,7 +244,7 @@ package main
 import "fmt"
 
 type MyInt1 int
-type MyInt2 = int
+type MyInt2 = int  // MyInt2等价于int
 
 func main() {
     var i int = 0
@@ -330,20 +294,6 @@ func app(a []int) {
 **解析：**
 
 因为append导致底层数组重新分配内存了，append中的a这个alice的底层数组和外面不是一个，并没有改变外面的。
-
-## 13. 关于字符串连接，下面语法正确的是？
-
-- A. str := 'abc' + '123'
-- B. str := "abc" + "123"
-- C. str := '123' + "abc"
-- D. fmt.Sprintf("abc%d", 123)
-
-**答：B、D**
-
-**解析：**
-
-在Golang中字符串用双引号，字符用单引号
-字符串连接除了以上两种连接方式，还有 `strings.Join()` 、 `buffer.WriteString()` 等
 
 ## 14. 下面这段代码能否编译通过？如果可以，输出什么？
 
@@ -402,34 +352,6 @@ A错在没有写类型，C错在字符串的空值是 `""` 而不是nil。
 
 ![image.png](https://cdn.nlark.com/yuque/0/2019/png/517869/1574040068413-cfcc17c2-6f8b-4c1c-b09b-d6d297c9f745.png#align=left&display=inline&height=330&name=image.png&originHeight=419&originWidth=948&size=156149&status=done&width=746)
 
-
-## 17. 下面这段代码输出什么以及原因？
-
-```go
-func hello() []string {
-    return nil
-}
-
-func main() {
-    h := hello
-    if h == nil {
-        fmt.Println("nil")
-    } else {
-        fmt.Println("not nil")
-    }
-}
-```
-
-- A. nil
-- B. not nil
-- C. compilation error
-
-**答：B**
-
-**解析：**
-
-这道题里面，是将 `hello()` 赋值给变量h，而不是函数的返回值，所以输出 `not nil` 
-
 ## 18. 下面这段代码能否编译通过？如果可以，输出什么？
 
 ```go
@@ -470,7 +392,8 @@ func main() {
 
 **解析：**
 
-A、B都是申明channel；C读取channel；写channel是必须带上值，所以D错误。
+A、B都是申明channel；A声明了channel但是没有初始化，此时channel为nil，发送与接收都会发生阻塞
+C读取channel；写channel是必须带上值，所以D错误。
 
 ## 20. 下面这段代码输出什么？
 
@@ -714,4 +637,5 @@ func main() {
 
 知识点：结构体嵌套。
 
-在嵌套结构体中，People 称为内部类型，Teacher 称为外部类型；通过嵌套，内部类型的属性、方法，可以为外部类型所有，就好像是外部类型自己的一样。此外，外部类型还可以定义自己的属性和方法，甚至可以定义与内部相同的方法，这样内部类型的方法就会被“屏蔽”。这个例子中的 ShowB() 就是同名方法。
+在嵌套结构体中，People 称为内部类型，Teacher 称为外部类型；通过嵌套，内部类型的属性、方法，可以为外部类型所有，就好像是外部类型自己的一样。
+此外，外部类型还可以定义自己的属性和方法，甚至可以定义与内部相同的方法，这样内部类型的方法就会被“屏蔽”。这个例子中的 ShowB() 就是同名方法。
